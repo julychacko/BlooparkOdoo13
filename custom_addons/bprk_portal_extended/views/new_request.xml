@@ -108,7 +108,7 @@
                                             </div>
 
                                             <div id="mandatory_gross_price_div" class="form-group col-md-12 col-12 d-none text-center">
-                                                <p class="validation-error">Minimum one product should be selected.</p>
+                                                <p class="validation-error">Minimum one supplier should be selected.</p>
                                             </div>
 
                                             <div class="form-group col-md-12 col-12">
