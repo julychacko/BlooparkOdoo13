@@ -1,0 +1,6 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_product_order_request_employee,product.order.request.employee,model_product_order_request,bprk_portal_extended.group_employee,1,1,1,0
+access_product_order_request_manager,product.order.request.manager,model_product_order_request,bprk_portal_extended.group_manager,1,1,1,1
+access_product_order_request_admin,product.order.request.admin,model_product_order_request,base.group_system,1,1,1,1
+access_product_order_request_internal_user,product.order.request.internal_user,model_product_order_request,bprk_portal_extended.group_internal_user,1,1,1,0
+access_ir_attachment_employee,ir.attachment.employee,base.model_ir_attachment,bprk_portal_extended.group_employee,1,1,1,1

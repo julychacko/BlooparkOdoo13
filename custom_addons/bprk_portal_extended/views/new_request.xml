@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- New Requests Creation -->
+    <template id="template_product_request" name="Create Request">
+        <t t-call="website.layout">
+            <div id="wrap">
+                <div class="oe_structure">
+                    <section class="">
+                        <div class="container">
+                            <div class="row s_nb_column_fixed">
+                                <div class="col-lg-12 text-center mt-4 title_header">
+                                    <p class="mb-0">Product Request Form</p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-xl-12 col-12">
+                                    <form id="register_form" action="/product_request_form" class="s_website_form container-fluid mt32 o_portal_wrap" method="post">
+                                        <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()" />
+                                        <input name="attachment_id" id="attachment_id" type="hidden" />
+                                        
+                                        <div class="form-row">
+                                            
+                                            <div class="form-group col-md-6 col-12">
+                                                <label class="col-form-label" for="product_id">Product
+                                                    <span style="color:black">*</span>
+                                                </label>
+                                                <select name="product_id" id="product_id" class="form-control" required="required">
+                                                    <option value="">Select a product</option>
+                                                    <t t-foreach="products or []" t-as="product">
+                                                        <option t-att-value="int(product.id)">
+                                                            <t t-esc="product.display_name" />
+                                                        </option>
+                                                    </t>
+                                                </select>
+                                            </div>
+
+                                            <div class="form-group col-md-6 col-12">
+                                                <label class="col-form-label" for="order_date">Date</label>
+                                                <input readonly="1" type="text" class="form-control" id="order_date" name="order_date" t-att-value="current_date" />
+                                            </div>
+
+                                            <div class="suppliers-list form-group col-md-12 col-12">
+                                            </div>
+                                            
+                                            <div class="form-group col-md-12 col-12 net-total-price-div">
+                                                <table class="table">
+                                                    <t t-set="currency_symbol" t-value="user.company_id.currency_id.symbol" />
+                                                    <tr>
+                                                        <td style="width:50%;" class="text-right">
+                                                            NET PRICE
+                                                        </td>
+                                                        <td>
+                                                            <t t-if="user.company_id.currency_id.position == 'before'">
+                                                                <t t-esc="currency_symbol" />
+                                                            </t>
+                                                            <span class="net-price"> 0 </span>
+                                                            <input type="hidden" name="net_price" id="net_price" value="0" />
+                                                            <t t-if="user.company_id.currency_id.position == 'after'">
+                                                                <t t-esc="currency_symbol" />
+                                                            </t>
+                                                        </td>
+
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="text-right">
+                                                            TAX
+                                                        </td>
+                                                        <td>
+                                                            <span class="tax-data"></span>
+                                                            <input type="hidden" name="tax_data" id="tax_data" />
+                                                        </td>
+
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="text-right">
+                                                           AMOUNT TAX
+                                                        </td>
+                                                        <td>
+                                                            <t t-if="user.company_id.currency_id.position == 'before'">
+                                                                <t t-esc="currency_symbol" />
+                                                            </t>
+                                                            <span class="amount-tax">0</span>
+                                                            <t t-if="user.company_id.currency_id.position == 'after'">
+                                                                <t t-esc="currency_symbol" />
+                                                            </t>
+                                                            <input type="hidden" name="amount_tax" id="amount_tax" />
+                                                        </td>
+
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="text-right">
+                                                            GROSS PRICE
+                                                        </td>
+                                                        <td>
+                                                            <t t-if="user.company_id.currency_id.position == 'before'">
+                                                                <t t-esc="currency_symbol" />
+                                                            </t>
+                                                            <span class="gross-price"> 0 </span>
+                                                            <input type="hidden" name="gross_price" id="gross_price" value="0" />
+                                                            <t t-if="user.company_id.currency_id.position == 'after'">
+                                                                <t t-esc="currency_symbol" />
+                                                            </t>
+                                                        </td>
+
+                                                    </tr>
+                                                </table>
+                                                
+                                            </div>
+
+                                            <div id="mandatory_gross_price_div" class="form-group col-md-12 col-12 d-none text-center">
+                                                <p class="validation-error">Minimum one product should be selected.</p>
+                                            </div>
+
+                                            <div class="form-group col-md-12 col-12">
+                                                <label class="col-form-label" for="desc">Description
+                                                </label>
+                                                <textarea name="desc" id="desc" class="form-control"/>
+                                            </div>
+                                            
+                                        </div>
+                                    </form>
+                                    <div id="outer">
+                                        <div id="inner">
+                                            <form action='/fileupload' class='dropzone needsclick dz-clickable product-order-dropzone' style='min-height: 7rem;'>
+                                                <img class='attachmnt-icon' src='/bprk_portal_extended/static/src/imgs/paper-clip.svg'/>
+                                                <div class='dz-message needsclick'>
+                                                    <img src='/bprk_portal_extended/static/src/imgs/drop.svg' style="transform: rotate(180deg);"/>
+                                                    <br/><br/>
+                                                    <span class='text-drop'>Click here to Attach File<br/>
+                                                    Accepted Files : Image/PDF</span>
+                                                    <br/>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+
+                                    <div id="mandatory_attachment_div" class="mt-2 form-group col-md-12 col-12 d-none text-center">
+                                        <p class="mb-0 validation-error">Upload attachment below 2.5 MB</p>
+                                    </div>
+
+                                    <div id="request_document_max_files" class="mt-2 form-group col-md-12 col-12 d-none text-center">
+                                        <p class="mb-0 validation-error">You can only upload one file</p>
+                                    </div>
+
+                                    <div id="wrong_files" class="mt-2 form-group col-md-12 col-12 d-none text-center">
+                                        <p class="mb-0 validation-error">You can only upload Images/PDF</p>
+                                    </div>
+
+                                    
+
+                                    <div id="rejected_request_warning" class="mt-4 rejected-warning mt-2 form-group col-md-12 col-12 d-none text-center">
+                                        <p class="mb-0 validation-error">You can only create a new request after 30 days of last rejected date.</p>
+                                    </div>
+
+                                    <div class="mt-3 mb-4 text-center">
+                                        <button type="button" class="btn_request_product btn btn-primary btn-block request-btn"><i id="create_request_process_icon" class="mr-2 d-none fa fa-refresh fa-spin"></i>Request Product</button>
+                                    </div>
+                                    
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+            </div>
+        </t>
+    </template>
+
+    
+    <template id="success_product_request" name="Success">
+        <t t-call="website.layout">
+            <div id="wrap">
+                <div class="success-content">
+                  <section>
+                      <div class="container">
+                          <div class="mt-5 text-center">
+                                <i class="fa fa-check-circle fa-tick"></i>
+                                <h5>Your request submitted successfully.</h5>
+                            
+                                <a href="/my/portal" type="button" class="btn request-btn btn-primary">GO TO DASHBOARD</a>
+                          </div>
+                      </div>
+                  </section>
+                </div>
+          </div>
+        </t>
+    </template>
+
+</odoo>

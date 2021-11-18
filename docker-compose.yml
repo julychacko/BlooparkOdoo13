@@ -1,0 +1,28 @@
+version: '3'
+
+services:
+ db:
+   image: postgres:11 # we will use postgres:11 image from docker hub for database
+   environment:
+     - POSTGRES_USER=odoo # Set value of postgres credential
+     - POSTGRES_PASSWORD=odoo
+     - POSTGRES_DB=postgres
+     - PGDATA=/var/lib/postgresql/data/pgdata
+   volumes:
+     - odoo-db-data:/var/lib/postgresql/data/pgdata # set postgresql data persistence
+
+ web:
+   image: odoo:13.0
+   volumes:
+     - ./addons-enterprise:/mnt/enterprise-addons # Mount volume between host and container, host_dir:container_dir
+     - ./addons-extra:/mnt/extra-addons
+     - ./config:/home/user/Desktop/Docker/config
+     - odoo-web-data:/var/lib/odoo
+   ports:
+     - "9069:8069" # this will create connection port between host and container, this means host_port:container_port
+   depends_on:
+     - db # set depends on postgresql db
+
+volumes:
+ odoo-web-data:
+ odoo-db-data:

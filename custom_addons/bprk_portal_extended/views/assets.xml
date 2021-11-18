@@ -1,0 +1,21 @@
+<odoo>
+   
+    <template id="product_request_assets" inherit_id="web.assets_frontend" name="Website Assets">
+        <xpath expr="." position="inside">
+            <link rel="stylesheet" media="screen, print" href="/bprk_portal_extended/static/src/css/dropzone.css"/>
+            <script type="text/javascript" src="/bprk_portal_extended/static/src/js/dropzone.js"></script>
+            <script type="text/javascript" src="/bprk_portal_extended/static/src/js/website_menu.js"></script>
+            <script type="text/javascript" src="/bprk_portal_extended/static/src/js/validations.js"></script>
+            <link rel="stylesheet" type="text/css" href="/bprk_portal_extended/static/src/css/website.css"/>
+            <link rel="stylesheet" type="text/css" href="/bprk_portal_extended/static/src/css/portal.css"/>
+        </xpath>
+        
+    </template>
+
+    <template id="assets_backend" name="Product request assets" inherit_id="web.assets_backend">
+        <xpath expr="." position="inside">
+            <link rel="stylesheet" href="/bprk_portal_extended/static/src/css/backend.css"/>
+        </xpath>
+    </template>
+
+</odoo>

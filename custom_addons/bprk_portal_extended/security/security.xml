@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="0">
+    
+    <record model="ir.module.category" id="module_category_bloopark_users">
+        <field name="name">Bloopark User Management</field>
+        <field name="description"> Users</field>
+        <field name="sequence">20</field>
+    </record>
+
+    <record id="group_manager" model="res.groups">
+        <field name="name">Manager</field>
+        <field name="category_id" ref="module_category_bloopark_users"/>
+        <field name="implied_ids" eval="[(4, ref('base.group_user'))]" />
+
+    </record>
+
+    <record id="group_internal_user" model="res.groups">
+        <field name="name">Internal User</field>
+        <field name="category_id" ref="module_category_bloopark_users"/>
+        <field name="implied_ids" eval="[(4, ref('base.group_user'))]" />
+    </record>
+
+
+    <record id="group_employee" model="res.groups">
+        <field name="name">Employee</field>
+        <field name="category_id" ref="module_category_bloopark_users"/>
+        <field name="implied_ids" eval="[(4, ref('base.group_portal'))]" />
+    </record>
+
+    <record id="prouduct_requests_employee_rule" model="ir.rule">
+        <field name="name">Employee - Product Requests</field>
+        <field name="model_id" ref="model_product_order_request"/>
+        <field name="domain_force">[('employee_id','=',user.id)]</field>
+        <field name="active" eval="True"/>
+        <field name="groups" eval="[(4, ref('bprk_portal_extended.group_employee'))]"/>
+    </record>
+
+
+
+</odoo>

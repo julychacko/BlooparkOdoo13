@@ -1,0 +1,306 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+	<template id="my_portal_dashboard" name="Dashboard">
+        <t t-call="website.layout">
+            <div id="wrap">
+                <div class="oe_structure">
+                    <section>
+                        <div class="container mt-4 mb-4">
+                            <div class="title_header">
+                                <p class="mb-0">Dashboard</p>
+                            </div>
+                            <t t-if="product_requests">
+                                <div class="row header-requests">
+                                    <div class="mt-2 col-md-6 col-sm-6 col-xl-6 col-12">
+                                        <form t-if="user.has_group('bprk_portal_extended.group_employee')" action="/CreateRequest" method="post">
+                                            <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()" />
+                                            <button type="submit" class="request-btn create-request-btn w-100" >Create Request</button>
+                                        </form>
+                                    </div>
+                                    <div class="mt-2 col-md-6 col-sm-6 col-xl-6 col-12 search-outer">
+                                        <input class="search-input" type="text" name="search" placeholder="Search by Order Number/State/Date" id="ProductRequestSearch"/>
+                                        <img src="/bprk_portal_extended/static/src/imgs/search.svg"/>
+                                    </div>
+                                </div>
+                            </t>
+                            <div class="col-md-12 mt-4">
+                                <table class="table table-responsive rounded mb-0 bg-white o_portal_my_doc_table w-100 d-block d-md-table product-requests-table" >
+                                    <t t-if="product_requests">
+                                        <thead>
+                                            <tr>
+                                                <th tabindex="0" class="text-left" style="vertical-align:middle;">Order Number</th>
+                                                <th tabindex="0" class="text-left">Order State</th>
+                                                <th tabindex="0" class="text-left" style="vertical-align:middle;width:20%;">Order Creation Date</th>
+                                                <th tabindex="0" class="text-left" style="vertical-align:middle;width:30%">Documents</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody class="product-request-tbody">
+                                            <tr t-att-class="'request-done' if product_request.state == 'done' else 'request-reject' if product_request.state == 'rejected' else ''" t-att-data-record-id="product_request.id" t-foreach="product_requests" t-as="product_request">
+                                                <td>
+                                                    <span t-esc="product_request.name" />
+                                                </td>
+                                                <td class="text-left" tabindex="0">
+                                                    <span><t t-esc="dict(product_request._fields['state'].selection).get(product_request.state)" /></span>
+                                                </td>
+                                                <td class="text-left" tabindex="0">
+                                                    <span t-esc="product_request.create_date.strftime('%Y %B %d')"/>
+                                                </td>
+                                                <td tabindex="0" class="text-left">
+                                                    <t t-foreach="product_request.attachment_ids" t-as="attachment">
+                                                        <span><t t-esc="attachment.name" /></span><br/>
+                                                    </t>
+                                                    
+                                                </td>
+                                                
+                                            </tr>
+                                        </tbody>
+                                    </t>
+                                    <t t-else="">
+                                        <section class="no-requests-dashboard">
+                                            <div class="empty-welcome-box">
+                                                <img class="" src="/bprk_portal_extended/static/src/imgs/empty-dashboard.svg"/>
+                                                <p class="welcome-head my-3"> No requests found !</p>
+                                                <t t-if="user.has_group('bprk_portal_extended.group_employee')">
+                                                    <p class="head-bottom-text">Click on ‘Create New Request to get started</p>
+                                                    <a href="/CreateRequest" class="request-btn">Create New Request</a>
+                                                </t>
+                                            </div>
+                                        </section>
+                                    </t>
+
+
+                                </table>
+
+                                <div t-if="pager and product_requests" class="row">
+                                    <div class="col-12">
+                                        <div class="o_portal_pager mt-2 mb-2 custom-pager" style="float:right;">
+                                            <t t-call="portal.pager"/>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+	                    </div>
+                    </section>
+                </div>
+            </div>
+        </t>
+    </template>
+
+
+    <template id="template_product_request_view" name="Product Request">
+        <t t-call="website.layout">
+            <div id="wrap">
+                <div class="oe_structure">
+                    <section>
+                        <div class="container mt-4 mb-4">
+                            <div class="title_header">
+                                <p class="mb-0">Order Details</p>
+                            </div>
+
+                            <div class="card">
+                                <div class="card-body">
+
+                                    <div class="row section-filter">
+                                        <div class="col-12 col-md-12">
+                                            <span class="request-number">
+                                                Order Name:<t t-esc="request_obj.name" />
+                                            </span>
+                                        
+                                            <span class="request-date">
+                                                Date:<t t-esc="request_obj.create_date.strftime('%Y %B %d')"/>
+                                            </span>
+                                        </div>
+                                        
+                                        <div class="col-12 col-md-12">
+                                            <div class="">
+                                                <h3 class="text-center mt-4">Employee Details</h3>
+                                                <div class="employee-details">
+                                                    
+                                                    <p class="mb-0">
+                                                        <strong>
+                                                            <t t-esc="request_obj.employee_id.sudo().name" />
+                                                        </strong>
+                                                    </p>
+                                                    <t t-if="request_obj.employee_id.sudo().email">
+                                                        <b>Email</b> : <t t-esc="request_obj.employee_id.sudo().email" />
+                                                    </t>
+                                                    <t t-if="request_obj.employee_id.sudo().phone">
+                                                        <br/><b>Phone</b> : <t t-esc="request_obj.employee_id.sudo().phone" />
+                                                    </t>
+                                                    <t t-if="request_obj.employee_id.sudo().street or request_obj.employee_id.sudo().city or request_obj.employee_id.sudo().state_id or request_obj.employee_id.sudo().country_id or request_obj.employee_id.sudo().zip">
+                                                        <br/><b>Address</b>
+                                                    </t>
+                                                    <t t-if="request_obj.employee_id.sudo().street">
+                                                        <br/><t t-esc="request_obj.employee_id.sudo().street" />
+                                                    </t>
+                                                    <t t-if="request_obj.employee_id.sudo().city">
+                                                        <br/><t t-esc="request_obj.employee_id.sudo().city" />
+                                                    </t>
+                                                    <t t-if="request_obj.employee_id.sudo().state_id or request_obj.employee_id.sudo().country_id or request_obj.employee_id.sudo().zip">
+                                                        <br/>
+                                                        <t t-esc="request_obj.employee_id.sudo().state_id.code" />
+                                                        <t t-if="request_obj.employee_id.sudo().state_id">,</t>
+                                                        <t t-esc="request_obj.employee_id.sudo().country_id.name" />
+                                                        <t t-if="request_obj.employee_id.sudo().country_id">,</t>
+                                                        <t t-esc="request_obj.employee_id.sudo().zip" />
+
+                                                    </t>
+                                                    <t t-if="request_obj.employee_id.sudo().company_id">
+                                                        <br/><b>Company</b> : <t t-esc="request_obj.employee_id.sudo().company_id.sudo().name" />
+                                                    </t>
+                                                </div>
+
+                                                <div t-if="request_obj.desc" class="col-12 col-md-12">
+                                                    <h3 class="text-center mt-4">Description</h3>
+                                                    <div class="employee-details">
+                                                        <p>
+                                                            <span t-esc="request_obj.desc"></span>
+                                                        </p>
+                                                    </div>
+                                                </div>
+
+                                                <t t-if="request_obj.attachment_ids">
+                                                    <h3 class="text-center mt-4">Attachments</h3>
+                                                    <div class="employee-details mt-3">
+                                                        <t t-set="sl_no" t-value="1" />
+                                                        <t t-foreach="request_obj.attachment_ids" t-as="attachment">
+                                                           <div class="row">
+                                                                <div class="col-2">
+                                                                    <t t-esc="sl_no" />
+                                                                    <t t-set="sl_no" t-value="sl_no+1" />
+                                                                </div>
+                                                                <div class="col-6 text-left">
+                                                                    <t t-esc="attachment.name" />
+                                                                </div>
+                                                                <div class="col-4">
+                                                                    <a class="att-download" t-attf-href="/web/content/#{attachment.id}?download=true" target="_self"><i class="mr-2 fa fa-download"/>Download</a>
+                                                                </div>
+                                                           </div>
+                                                        </t>
+                                                        
+                                                        
+                                                    </div>
+                                                </t>
+
+
+                                                <h3 class="text-center mt-4">Product Details</h3>
+                                                <div class="employee-details">
+                                                    <div id="outer" t-if="request_obj.product_id.image_1920">
+                                                        <div id="inner" class="product-image">
+                                                            <img t-att-src="image_data_uri(request_obj.product_id.image_1920)" class="img d-block"/>
+                                                        </div>
+                                                    </div>
+                                                    <span>
+                                                        <strong>Name : </strong>
+                                                        <t t-esc="request_obj.product_id.display_name" />
+                                                    </span>
+                                                    <br/>
+                                                    <span>
+                                                        <strong>Category : </strong>
+                                                        <t t-esc="request_obj.product_id.categ_id.display_name" />
+                                                    </span>
+                                                    <br/>
+                                                    <span>
+                                                        <strong>Order Status : </strong>
+                                                        <t t-esc="dict(request_obj._fields['state'].selection).get(request_obj.state)" />
+                                                    </span><br/>
+                                                    <span>
+                                                        <strong>Supplier Name : </strong>
+                                                        <t t-esc="request_obj.supplier_id.name" />
+                                                    </span>
+                                                    <br/>
+                                                    <span>
+                                                        <strong>Net Price : </strong>
+                                                        <span t-field="request_obj.net_price"
+                                                         t-options='{"widget": "monetary", "display_currency": request_obj.currency_id}'/>
+                                                    </span>
+                                                    <br/>
+                                                    <span>
+                                                        <strong>Tax : </strong>
+                                                        <t t-set="tax_name" t-as=""/>
+                                                        <t t-foreach="request_obj.tax_ids" t-as="tax">
+                                                            <t t-if="tax_name">
+                                                                <t t-set="tax_name" t-value="tax_name+ ',' + tax.display_name" />
+                                                            </t>
+                                                            <t t-else="">
+                                                                <t t-set="tax_name" t-value="tax.display_name" />
+                                                            </t>
+                                                        </t>
+                                                        <t t-esc="tax_name" />
+                                                    </span>
+                                                    <br/>
+                                                    <span>
+                                                        <strong>Tax Amount : </strong>
+                                                        <span t-field="request_obj.tax_amount"
+                                                         t-options='{"widget": "monetary", "display_currency": request_obj.currency_id}'/>
+                                                    </span>
+                                                    <br/><br/>
+                                                    <span class="gross-price-view">
+                                                        <strong>GROSS PRICE : </strong>
+                                                        <span t-field="request_obj.gross_price"
+                                                         t-options='{"widget": "monetary", "display_currency": request_obj.currency_id}'/>
+                                                    </span>
+                                                    <br/><br/>
+                                                    
+                                                    
+                                                </div>
+                                                
+                                                
+                                            </div>
+                                        </div>
+
+                                
+                                    </div>
+
+                                    <div t-if="request_obj.state == 'draft' and user.has_group('bprk_portal_extended.group_manager')" class="row">
+                                        <div class="col-6 mt-3">
+                                            <form action="/PerformAction" method="post">
+                                                <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()" />
+                                                <input type="hidden" name="request_id" t-att-value="request_obj.id" />
+                                                <input type="hidden" name="action" value="approve" />
+                                                <button type="submit" class="approve-btn request-btn w-100" ><i id="approve_btn_process_icon" class="mr-2 d-none fa fa-refresh fa-spin"></i>APPROVE</button>
+                                            </form>
+                                        </div>
+                                        <div class="col-6 mt-3">
+                                            <form action="/PerformAction" method="post">
+                                                <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()" />
+                                                <input type="hidden" name="request_id" t-att-value="request_obj.id" />
+                                                <input type="hidden" name="action" value="reject" />
+                                                <button type="submit" class="reject-btn w-100" ><i id="reject_btn_process_icon" class="mr-2 d-none fa fa-refresh fa-spin"></i>REJECT</button>
+                                            </form>
+                                        </div>
+                                    </div>
+
+                                    <div t-if="request_obj.state == 'approved' and user.has_group('bprk_portal_extended.group_employee')" class="row">
+                                        <div class="col-12 mt-3">
+                                            <form action="/PerformAction" method="post">
+                                                <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()" />
+                                                <input type="hidden" name="request_id" t-att-value="request_obj.id" />
+                                                <input type="hidden" name="action" value="buy" />
+                                                <button type="submit" class="buy-product-btn request-btn w-100" ><i id="buy_product_btn_process_icon" class="mr-2 d-none fa fa-refresh fa-spin"></i>BUY PRODUCT</button>
+                                            </form>
+                                        </div>
+                                    </div>
+
+                                    <div t-if="request_obj.state == 'ready_pick_up' and user.has_group('bprk_portal_extended.group_employee')" class="row">
+                                        <div class="col-12 mt-3">
+                                            <form action="/PerformAction" method="post">
+                                                <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()" />
+                                                <input type="hidden" name="request_id" t-att-value="request_obj.id" />
+                                                <input type="hidden" name="action" value="pickup" />
+                                                <button type="submit" class="pickup-btn request-btn w-100" ><i id="pickup_btn_process_icon" class="mr-2 d-none fa fa-refresh fa-spin"></i>PICKUP</button>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </section>
+                </div>
+            </div>
+        </t>
+    </template>
+    
+</odoo>

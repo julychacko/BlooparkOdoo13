@@ -1,0 +1,118 @@
+<?xml version="1.0" ?>
+<odoo>
+
+    <data noupdate="0">
+
+        <!--Notify Employee to pickup the product -->
+        <record id="email_template_product_receive_employee" model="mail.template">
+            <field name="name">Receive Product</field>
+            <field name="model_id" ref="bprk_portal_extended.model_product_order_request"/>
+            <field name="email_from">${(object.company_id.email_formatted or user.email_formatted) |safe}</field>
+            <field name="partner_to">${object.employee_id.partner_id.id}</field>
+            <field name="subject">Product Receival Notification</field>
+            <field name="body_html" type="html">
+                <div style="margin: 0px; padding: 0px;">
+                    <p style="margin: 0px; padding: 0px; font-size: 13px;">
+                        Dear ${object.employee_id.name},
+                        <br /><br />
+                        Your product ${object.product_id.display_name} from the order ${object.name} is ready. You can pick it at the office on ${object.picking_id.picking_date}
+                        
+                        <br /><br />
+                        Regards
+                    </p>
+                </div>
+            </field>
+            <field name="report_name">Product Receival Notification</field>
+            <field name="lang">${object.employee_id.partner_id.lang}</field>
+            <field name="user_signature" eval="False"/>
+            <field name="auto_delete" eval="True"/>
+        </record>
+
+
+        <!-- Notify Manager when a new request comes -->
+        <record id="email_template_new_request_manager" model="mail.template">
+            <field name="name">New Request</field>
+            <field name="model_id" ref="bprk_portal_extended.model_product_order_request"/>
+            <field name="email_from">${(object.company_id.email_formatted or user.email_formatted) |safe}</field>
+            <field name="partner_to">${object.employee_id.sudo().manager_id.sudo().partner_id.id}</field>
+            <field name="subject">New Request Notification</field>
+            <field name="body_html" type="html">
+                <div style="margin: 0px; padding: 0px;">
+                    <p style="margin: 0px; padding: 0px; font-size: 13px;">
+                        Dear ${object.employee_id.sudo().manager_id.sudo().name},
+                        <br /><br />
+                        The employee ${object.employee_id.name} has requested the following product: <br/>${object.product_id.sudo().display_name} <br/><br/>
+                        Please, check the order here: 
+                        <a href="${object.get_request_portal_url()}"
+                                style="background-color: #875A7B; padding: 8px 16px 8px 16px; text-decoration: none; color: #fff; border-radius: 5px; font-size:13px;">
+                            Click Here.</a> 
+                        to approve it or reject it. 
+                        
+                        <br /><br />
+                        Regards
+                    </p>
+                </div>
+            </field>
+            <field name="report_name">New Request Notification</field>
+            <field name="lang">${object.employee_id.manager_id.sudo().partner_id.sudo().lang}</field>
+            <field name="user_signature" eval="False"/>
+            <field name="auto_delete" eval="True"/>
+        </record>
+
+
+
+        <!-- Notify Employee when manager approve request -->
+        <record id="email_template_approved_request_employee" model="mail.template">
+            <field name="name">Approved Request</field>
+            <field name="model_id" ref="bprk_portal_extended.model_product_order_request"/>
+            <field name="email_from">${(object.company_id.email_formatted or user.email_formatted) |safe}</field>
+            <field name="partner_to">${object.employee_id.partner_id.id}</field>
+            <field name="subject">Product Request Approved</field>
+            <field name="body_html" type="html">
+                <div style="margin: 0px; padding: 0px;">
+                    <p style="margin: 0px; padding: 0px; font-size: 13px;">
+                        Dear ${object.employee_id.sudo().name},
+                        <br /><br />
+                        Your manager has approved the order. Please go to your order and click on the button “Buy product”: <a href="${object.get_request_portal_url()}"
+                                style="background-color: #875A7B; padding: 8px 16px 8px 16px; text-decoration: none; color: #fff; border-radius: 5px; font-size:13px;">
+                                Click Here.</a> 
+                        <br /><br />
+                        Regards
+                    </p>
+                </div>
+            </field>
+            <field name="report_name">Product Approval Notification</field>
+            <field name="lang">${object.employee_id.partner_id.sudo().lang}</field>
+            <field name="user_signature" eval="False"/>
+            <field name="auto_delete" eval="True"/>
+        </record>
+
+
+        <!-- Notify Employee when manager rejected request -->
+        <record id="email_template_rejected_request_employee" model="mail.template">
+            <field name="name">Rejected Request</field>
+            <field name="model_id" ref="bprk_portal_extended.model_product_order_request"/>
+            <field name="email_from">${(object.company_id.email_formatted or user.email_formatted) |safe}</field>
+            <field name="partner_to">${object.employee_id.partner_id.id}</field>
+            <field name="subject">Product Request Rejected</field>
+            <field name="body_html" type="html">
+                <div style="margin: 0px; padding: 0px;">
+                    <p style="margin: 0px; padding: 0px; font-size: 13px;">
+                        Dear ${object.employee_id.sudo().name},
+                        <br /><br />
+                        sadly your order was rejected for this month, but you can create a new one for the same product or a different one next month.
+                        <br /><br />
+                        Regards
+                    </p>
+                </div>
+            </field>
+            <field name="report_name">Product Approval Notification</field>
+            <field name="lang">${object.employee_id.partner_id.sudo().lang}</field>
+            <field name="user_signature" eval="False"/>
+            <field name="auto_delete" eval="True"/>
+        </record>
+
+
+        
+    </data>
+</odoo>

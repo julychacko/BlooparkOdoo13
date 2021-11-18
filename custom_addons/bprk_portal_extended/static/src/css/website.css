@@ -1,0 +1,161 @@
+body {
+    font-family: 'Helvetica'!important;
+}
+.navbar-light .navbar-nav .nav-link {
+    padding: 12px 38px;
+    border-radius: 4px;
+    margin-right: 7px;
+    color: #ffffff;
+    background-color: #18223C !important;
+    border: 2px solid #18223C !important;
+}
+.navbar-light .navbar-nav .nav-link.active {
+    color: #FFFFFF !important;
+}
+.navbar-light .navbar-nav .nav-link:hover, .navbar-light .navbar-nav .nav-link:focus {
+    color: #18223C !important;
+    background-color: #ffffff !important;
+    border: 2px solid #ffffff !important;
+}
+.btn-primary {
+    background-color: #18223C!important;
+    border-color: #18223C;
+    padding: 12px 38px;
+}
+.btn-primary:hover, .btn-primary:focus,.btn-primary:active {
+    background-color: #18223C!important;
+    color: #9f8700 !important;
+    box-shadow: none!important;
+    outline: none!important;
+}
+a {
+    color: #9f8700;
+}
+a:focus{
+    outline: none;
+}
+a:hover {
+    color: #FFFFFF!important;
+}
+.btn-secondary {
+    color: #ffffff !important;
+    background-color: #18223C !important;
+    border: 2px solid #18223C !important;
+}
+.btn-secondary:hover {
+    color: #18223C !important;
+    background-color: #ffffff !important;
+    border: 2px solid #ffffff !important;
+}
+.navbar-light {
+    background-color: #FFE139!important;
+}
+.o_footer {
+    background-color: #18223C!important;
+    color: #FFFFFF;
+}
+.o_main_navbar {
+    background-color: #18223C;
+}
+
+.o_main_navbar > ul > li > a:hover, .o_main_navbar > ul > li > label:hover {
+    color: #9f8700;
+    background-color: #18223C!important;
+}
+
+#oe_main_menu_navbar .o_menu_systray > li > a[data-action="edit"], #oe_main_menu_navbar .o_menu_systray > li > a[data-action="translate"], #oe_main_menu_navbar .o_menu_systray > li > a.css_edit_dynamic {
+    background-color: #9f8700;
+    border-color: #9f8700;
+}
+
+.o_main_navbar .show .dropdown-toggle {
+    background-color: #18223C;
+}
+
+.dropdown-item:active,  .dropdown-item:hover{
+    background-color: #9f8700;
+}
+
+.dropzone .dz-preview .dz-success-mark svg {
+    background-color: #2fd452 !important;
+    border-radius: 50px;
+}
+[type="radio"]:checked,
+[type="radio"]:not(:checked) {
+    position: absolute;
+    left: -9999px;
+}
+[type="radio"]:checked + label,
+[type="radio"]:not(:checked) + label
+{
+    position: relative;
+    padding-left: 28px;
+    cursor: pointer;
+    line-height: 20px;
+    display: inline-block;
+    color: #666;
+}
+[type="radio"]:checked + label:before,
+[type="radio"]:not(:checked) + label:before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 17px;
+    height: 17px;
+    border: 1px solid #18223C;
+    border-radius: 100%;
+    background: #fff;
+}
+[type="radio"]:checked + label:after,
+[type="radio"]:not(:checked) + label:after,
+[type="radio"]:not(:checked):hover+label:before{
+    content: url("/bprk_portal_extended/static/src/imgs/tick.png");
+    width: 17px;
+    height: 17px;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    border-radius: 100%;
+    border: 1px solid #01BDF4;
+    -webkit-transition: all 0.4s ease;
+    transition: all 0.4s ease;
+   
+}
+[type="radio"]:not(:checked):hover+label:before{
+    content: url("/bprk_portal_extended/static/src/imgs/tick.png");
+    width: 17px;
+    height: 17px;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    border-radius: 100%;
+    border: 1px solid #01BDF4;
+}
+[type="radio"]:not(:checked) + label:after {
+    opacity: 0;
+    -webkit-transform: scale(0);
+    transform: scale(0);
+}
+[type="radio"]:checked + label:after {
+    opacity: 1;
+    -webkit-transform: scale(1);
+    transform: scale(1);
+}
+.page-item.active .page-link, .page-item:last-child .page-link { 
+    background-color: #18223C !important;
+    border: 1px solid #18223C !important;
+    color: #FFFFFF;
+}
+
+a:focus {
+    box-shadow: none!important;
+}
+.page-item.active .page-link:hover, .page-item:last-child .page-link:hover {
+    color: #9f8700 !important;
+}
+.page-link:hover{
+    color: #9f8700 !important;
+}
+
+

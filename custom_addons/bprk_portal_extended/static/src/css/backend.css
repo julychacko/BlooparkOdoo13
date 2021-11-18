@@ -1,0 +1,51 @@
+.o_main_navbar {
+    background-color: #18223C;
+}
+.o_main_navbar > a:hover, .o_main_navbar > a:focus, .o_main_navbar > button:hover, .o_main_navbar > button:focus {
+    color: #9f8700!important;
+    background-color: #18223C;
+}
+
+.o_main_navbar > ul > li > a:hover, .o_main_navbar > ul > li > label:hover {
+    color: #9f8700!important;
+    background-color: #18223C;
+}
+.o_main_navbar .show .dropdown-toggle {
+    background-color: #18223C;
+}
+.btn-primary {
+    background-color: #18223C; 
+    border: 1px solid #18223C;  
+}
+.btn-primary:focus {
+    box-shadow: none!important;
+}
+.btn-primary:hover {
+    background-color: #18223C; 
+    color: #9f8700!important;  
+    border-color:#18223C;  
+}
+
+a {
+    color: #18223C;
+}
+
+a:hover {
+    color: #9f8700!important
+}
+
+.o_required_modifier.o_input, .o_required_modifier .o_input {
+    background-color: #dc8b92!important;
+}
+
+.o_web_client input:focus, .o_web_client textarea:focus, .o_web_client select:focus {
+    border-bottom: 2px solid #18223C;
+}
+
+.ui-menu-item a:hover, .ui-menu-item a:focus {
+     color: #9f8700 !important; 
+}
+
+.o_field_widget.o_field_image .o_form_image_controls {
+    background-color: #18223C;
+}

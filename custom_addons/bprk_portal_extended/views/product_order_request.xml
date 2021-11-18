@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_requests_form" model="ir.ui.view">
+        <field name="name">product.order.request.form</field>
+        <field name="model">product.order.request</field>
+        <field name="arch" type="xml">
+            <form string="Requests">
+                <header>
+                    <!-- <button name="approve_request" attrs="{'invisible':[('state','!=','draft')]}" type="object" string="Approve" class="oe_highlight"/>
+                    <button name="reject_request" attrs="{'invisible':[('state','!=','draft')]}" type="object" string="Reject" class="oe_highlight"/> -->
+                    <button name="mark_as_done" attrs="{'invisible':[('state','!=','ready_pick_up')]}" type="object" string="Mark as done" class="oe_highlight"/>
+                    <field name="state" statusbar_visible="draft,approved,done" widget="statusbar" />
+                </header>
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button type="object" name="action_view_order" class="oe_stat_button" icon="fa-file" attrs="{'invisible':[('order_id', '=', False)]}">
+                            View Order
+                        </button>
+                    </div>
+                    <div class="oe_title">
+                        <h1><field name="name" readonly="1" /></h1>
+                        
+                    </div>
+                    <group col="4">
+                        <field name="product_id" readonly="1" options="{'no_create':1}" />
+                        <field name="employee_id" readonly="1" options="{'no_create':1}" />
+                        <field name="supplier_id" readonly="1" options="{'no_create':1}" />
+                        <field name="company_id" readonly="1" options="{'no_create':1}" groups="base.group_multi_company"/>
+                        <field name="currency_id" invisible="1" />
+                        <field name="product_supplier_id" invisible="1" />
+                        <field name="order_id" invisible="1" />
+
+                    </group>
+                        
+                    <notebook>
+                        <page string="Additional Info">
+                            <group>
+                                <field name="desc" readonly="1" />
+                            </group>
+                            <group class="oe_subtotal_footer oe_right">
+                                <field name="net_price" readonly="1" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                                <field name="tax_ids" readonly="1" widget="many2many_tags" />
+                                <field name="tax_amount" readonly="1" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                                <field name="gross_price" class="oe_subtotal_footer_separator" readonly="1" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                            </group>
+                        </page>
+                        <page string="Documents">
+                            <group string="Upload Documents">
+                                <field attrs="{'readonly':[('state','=','done')]}" name="attachment_ids" widget="many2many_binary" nolabel="1"/>
+                            </group>
+                        </page>
+                        <page attrs="{'invisible':[('state','not in',['ready_pick_up','done'])]}" string="Picking Info">
+                            <group>
+                                <field name="picking_id" readonly="1" />
+                            </group>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_requests_tree" model="ir.ui.view">
+        <field name="name">product.order.request.tree</field>
+        <field name="model">product.order.request</field>
+        <field name="arch" type="xml">
+            <tree string="Requests">
+                <field name="name" />
+                <field name="employee_id" />
+                <field name="state" />
+                <field name="company_id" options="{'no_create':1}" groups="base.group_multi_company"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- Requests -->
+    <record id="action_requests" model="ir.actions.act_window">
+        <field name="name">Requests</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">product.order.request</field>
+        <field name="view_mode">tree,form</field>
+        <field name="context">{"create":0,"group_by":"employee_id"}</field>
+        <field name="help" type="html">
+          <p class="o_view_nocontent_smiling_face">
+            Create a new Request
+          </p>
+
+        </field>
+    </record>
+
+
+    <menuitem id="product_requests_menu_root"
+              sequence="11"
+              name="Request Management"
+              web_icon="bprk_portal_extended,static/src/imgs/request.png"
+              groups="bprk_portal_extended.group_manager,base.group_system,bprk_portal_extended.group_internal_user"
+    />
+
+    <menuitem id="requests_main_menu"
+              sequence="10"
+              name="Requests"
+              parent="product_requests_menu_root"
+              action="action_requests"
+    />
+
+</odoo>
