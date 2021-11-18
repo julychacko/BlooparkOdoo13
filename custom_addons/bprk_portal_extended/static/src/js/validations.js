@@ -184,33 +184,39 @@ odoo.define('bprk_portal_extended.websitemenu', function (require) {
     if ($(".product-order-dropzone").length) {
 
         var att_count = 0;
-        var myDropzone = new Dropzone(".product-order-dropzone", {maxFiles: 1,acceptedFiles: 'image/*,pdf/*',addRemoveLinks: true, timeout: 0,});
+        var myDropzone = new Dropzone(".product-order-dropzone", {maxFilesize:3,maxFiles: 1,acceptedFiles: 'image/*,pdf/*',addRemoveLinks: true, timeout: 0,});
 
         myDropzone.on("maxfilesexceeded", function(file) {
-            att_count = att_count +1;
-            myDropzone.removeFile(file);
+            // myDropzone.removeFile(file);
             $('#request_document_max_files').removeClass('d-none');
 
         });
 
-        // myDropzone.on("error", function(file) {
-        //     setTimeout(function() {
-        //         att_count  = att_count + 1
-        //         myDropzone.removeFile(file);
-        //     }, 0);
-        //     $('#wrong_files').removeClass('d-none');
+        myDropzone.on("error", function(file) {
+            setTimeout(function() {
+                myDropzone.removeFile(file);
+            }, 0);
+            $('#wrong_files').removeClass('d-none');
 
-        // });
+        });
+
+
+        myDropzone.on("addedfile", function(file) {
+            att_count = att_count + 1;
+        });
+
 
         myDropzone.on("success", function(file, response) {
-            att_count = att_count + 1;
             var obj = JSON.parse(response);
-            $('#attachment_id').val(obj['attachment_id'])
+            $('#attachment_id').val(obj['attachment_id']);
+            $('#wrong_files').addClass('d-none');
+            $('#request_document_max_files').addClass('d-none');
             
         });
 
         myDropzone.on("removedfile", function(file) {
-            if (att_count == 1){
+            att_count = att_count - 1;
+            if (att_count < 1){
                 $('#attachment_id').val("")    
             }
 
